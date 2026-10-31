@@ -168,6 +168,8 @@ public class VanillaAdjustments(
                     hostility[bot] = newHostilitySettings;
                 }
             }
+
+            locationBase.BotLocationModifier!.AdditionalHostilitySettings = hostility;
         }
 
         var databaseBots = botTable.Types;
