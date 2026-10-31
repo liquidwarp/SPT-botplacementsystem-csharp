@@ -1,0 +1,40 @@
+param(
+    [string]$SPTPath = 'E:\Games\SPT\4.1',
+
+    [string]$HeadlessPath = 'E:\Games\SPT\4.1 Headless',
+
+    [ValidateSet('Debug', 'Release')]
+    [string]$Configuration = 'Release',
+
+    [switch]$InstallMod,
+
+    [switch]$InstallClientMod,
+
+    [switch]$InstallServerMod,
+
+    [switch]$PackageRelease
+)
+
+$ErrorActionPreference = 'Stop'
+
+if (-not (Test-Path "$SPTPath\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll")) {
+    throw "SPT not found at '$SPTPath'"
+}
+
+$installClientMod = $InstallMod -or $InstallClientMod
+if ($installClientMod -and $HeadlessPath -and -not (Test-Path "$HeadlessPath\BepInEx\plugins")) {
+    throw "Headless not found at '$HeadlessPath'"
+}
+
+$buildArgs = @(
+    "$PSScriptRoot\ABPS.slnx"
+    "-c", $Configuration
+    "-p:SPTPath=$SPTPath"
+    "-p:HeadlessPath=$HeadlessPath"
+    "-p:InstallClientMod=$installClientMod"
+    "-p:InstallServerMod=$($InstallMod -or $InstallServerMod)"
+    "-p:PackageRelease=$($PackageRelease.IsPresent)"
+    "-tlp:verbosity=detailed"
+)
+dotnet build @buildArgs
+if ($LASTEXITCODE -ne 0) { throw "dotnet build failed ($LASTEXITCODE)" }

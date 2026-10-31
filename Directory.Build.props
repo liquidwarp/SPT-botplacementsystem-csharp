@@ -1,0 +1,24 @@
+<Project>
+
+    <PropertyGroup>
+        <Authors>acidphantasm</Authors>
+        <ModName>botplacementsystem</ModName>
+        <ModGuid>com.acidphantasm.botplacementsystem</ModGuid>
+        <VersionPrefix>2.1.0</VersionPrefix>
+        <ForkMarker>lqw</ForkMarker>
+        <ForkRevision>1</ForkRevision>
+        <VersionSuffix>$(ForkMarker)-$(ForkRevision)</VersionSuffix>
+        <Version>$(VersionPrefix)-$(VersionSuffix)</Version>
+        <ClientSPTVersion>4.1.6</ClientSPTVersion>
+        <ServerSPTVersion>~4.1.6</ServerSPTVersion>
+        <SPTPackageVersion>4.1.6</SPTPackageVersion>
+        <Product>Acid's Bot Placement System</Product>
+        <AssemblyName>$(Authors)-$(ModName)</AssemblyName>
+        <ReleaseDir>$(MSBuildThisFileDirectory)releases\$(Authors)-$(ModName)-$(Version)</ReleaseDir>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DebugType>None</DebugType>
+        <GenerateDependencyFile>false</GenerateDependencyFile>
+    </PropertyGroup>
+</Project>

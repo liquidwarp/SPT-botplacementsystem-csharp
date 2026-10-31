@@ -5,7 +5,7 @@ using EFT;
 
 namespace BotPlacementSystemClient;
 
-[BepInPlugin("com.acidphantasm.botplacementsystem", "acidphantasm-botplacementsystem", "2.1.0")]
+[BepInPlugin(MyModInfo.MOD_GUID, "acidphantasm-botplacementsystem", MyModInfo.MOD_VERSION)]
 [BepInDependency("com.fika.headless", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BaseUnityPlugin
 {
