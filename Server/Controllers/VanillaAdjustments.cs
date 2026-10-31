@@ -80,7 +80,7 @@ public class VanillaAdjustments(
         {
             // Start-Stop Time for spawns
             locationBase.BotStart = ModConfig.Config.ScavConfig.Waves.StartSpawns;
-            locationBase.BotStop = (int)locationBase.EscapeTimeLimit * 60 - ModConfig.Config.ScavConfig.Waves.StopSpawns;
+            locationBase.BotStop = (int)locationBase.EscapeTimeLimit!.Value * 60 - ModConfig.Config.ScavConfig.Waves.StopSpawns;
 
             // Start-Stop wave times for active spawning
             locationBase.BotSpawnTimeOnMin = 45;
@@ -100,7 +100,7 @@ public class VanillaAdjustments(
         {
             // Start-Stop Time for spawns
             locationBase.BotStart = ModConfig.Config.ScavConfig.Waves.StartSpawns;
-            locationBase.BotStop = (int)locationBase.EscapeTimeLimit * 60 - ModConfig.Config.ScavConfig.Waves.StopSpawns;
+            locationBase.BotStop = (int)locationBase.EscapeTimeLimit!.Value * 60 - ModConfig.Config.ScavConfig.Waves.StopSpawns;
 
             // Start-Stop wave times for active spawning
             locationBase.BotSpawnTimeOnMin = ModConfig.Config.ScavConfig.Waves.ActiveTimeMin;
@@ -130,25 +130,25 @@ public class VanillaAdjustments(
     {
         if (!botConfig.PlayerScavBrainType.ContainsKey("labyrinth"))
         {
-            botConfig.PlayerScavBrainType["labyrinth"] = cloner.Clone(botConfig.PlayerScavBrainType["laboratory"]);
+            botConfig.PlayerScavBrainType["labyrinth"] = cloner.Clone(botConfig.PlayerScavBrainType["laboratory"])!;
         }
-        
+
         if (!botConfig.AssaultBrainType.ContainsKey("labyrinth"))
         {
-            botConfig.AssaultBrainType["labyrinth"] = cloner.Clone(botConfig.AssaultBrainType["laboratory"]);
+            botConfig.AssaultBrainType["labyrinth"] = cloner.Clone(botConfig.AssaultBrainType["laboratory"])!;
         }
     }
 
     public void FixPmcHostility(LocationBase locationBase)
     {
-        var hostility = locationBase.BotLocationModifier?.AdditionalHostilitySettings.ToList();
-        if (hostility is not null || hostility.Any())
+        var hostility = locationBase.BotLocationModifier?.AdditionalHostilitySettings?.ToList();
+        if (hostility is not null && hostility.Any())
         {
             for (var bot = 0; bot < hostility.Count; bot++)
             {
                 if (hostility[bot].BotRole == "pmcUSEC" || hostility[bot].BotRole == "pmcBEAR")
                 {
-                    var newHostilitySettings = cloner.Clone(ModConfig.HostilityDefaults);
+                    var newHostilitySettings = cloner.Clone(ModConfig.HostilityDefaults)!;
                     newHostilitySettings.BotRole = hostility[bot].BotRole;
                     hostility[bot] = newHostilitySettings;
                 }
@@ -156,13 +156,13 @@ public class VanillaAdjustments(
                 // Fix scav hostility settings for every map
                 if (hostility[bot].BotRole == "assault" || hostility[bot].BotRole == "marksman")
                 {
-                    var newHostilitySettings = cloner.Clone(ModConfig.HostilityDefaults);
+                    var newHostilitySettings = cloner.Clone(ModConfig.HostilityDefaults)!;
                     newHostilitySettings.BotRole = hostility[bot].BotRole;
-                    foreach (var botType in newHostilitySettings.AlwaysEnemies)
+                    foreach (var botType in newHostilitySettings.AlwaysEnemies!)
                     {
                         if (botType == "pmcBEAR" || botType == "pmcUSEC") continue;
-                        
-                        newHostilitySettings.AlwaysFriends.Add(botType);
+
+                        newHostilitySettings.AlwaysFriends!.Add(botType);
                         newHostilitySettings.AlwaysEnemies.Remove(botType);
                     }
                     hostility[bot] = newHostilitySettings;
@@ -175,37 +175,38 @@ public class VanillaAdjustments(
         {
             if (bot.Contains("assault") || bot.Contains("marksman"))
             {
-                foreach (var (difficulty, dataSet) in databaseBots[bot].BotDifficulty)
+                foreach (var (difficulty, dataSet) in data!.BotDifficulty!)
                 {
-                    if (databaseBots[bot].BotDifficulty[difficulty].Mind.EnemyBotTypes is null)
+                    var mind = dataSet.Mind!;
+                    if (mind.EnemyBotTypes is null)
                     {
-                        databaseBots[bot].BotDifficulty[difficulty].Mind.EnemyBotTypes = new List<WildSpawnType>();
+                        mind.EnemyBotTypes = new List<WildSpawnType>();
                     }
-                    databaseBots[bot].BotDifficulty[difficulty].Mind.EnemyBotTypes.Add(WildSpawnType.pmcUSEC);
-                    databaseBots[bot].BotDifficulty[difficulty].Mind.EnemyBotTypes.Add(WildSpawnType.pmcBEAR);
+                    mind.EnemyBotTypes.Add(WildSpawnType.pmcUSEC);
+                    mind.EnemyBotTypes.Add(WildSpawnType.pmcBEAR);
                 }
             }
         }
 
         foreach (var (bot, data) in pmcConfig.HostilitySettings)
         {
-            if (pmcConfig.HostilitySettings[bot].AdditionalEnemyTypes is not null)
+            if (data.AdditionalEnemyTypes is not null)
             {
-                if (!pmcConfig.HostilitySettings[bot].AdditionalEnemyTypes.Contains("assault")) 
-                    pmcConfig.HostilitySettings[bot].AdditionalEnemyTypes.Add("assault");
-                
-                if (!pmcConfig.HostilitySettings[bot].AdditionalEnemyTypes.Contains("pmcBEAR")) 
-                    pmcConfig.HostilitySettings[bot].AdditionalEnemyTypes.Add("pmcBEAR");
-                
-                if (!pmcConfig.HostilitySettings[bot].AdditionalEnemyTypes.Contains("pmcUSEC")) 
-                    pmcConfig.HostilitySettings[bot].AdditionalEnemyTypes.Add("pmcUSEC");
-            }
-            pmcConfig.HostilitySettings[bot].SavageEnemyChance = 100;
-            pmcConfig.HostilitySettings[bot].BearEnemyChance = 100;
-            pmcConfig.HostilitySettings[bot].UsecEnemyChance = 100;
-            pmcConfig.HostilitySettings[bot].SavagePlayerBehaviour = "AlwaysEnemies";
+                if (!data.AdditionalEnemyTypes.Contains("assault"))
+                    data.AdditionalEnemyTypes.Add("assault");
 
-            foreach (var chancedEnemy in pmcConfig.HostilitySettings[bot].ChancedEnemies)
+                if (!data.AdditionalEnemyTypes.Contains("pmcBEAR"))
+                    data.AdditionalEnemyTypes.Add("pmcBEAR");
+
+                if (!data.AdditionalEnemyTypes.Contains("pmcUSEC"))
+                    data.AdditionalEnemyTypes.Add("pmcUSEC");
+            }
+            data.SavageEnemyChance = 100;
+            data.BearEnemyChance = 100;
+            data.UsecEnemyChance = 100;
+            data.SavagePlayerBehaviour = "AlwaysEnemies";
+
+            foreach (var chancedEnemy in data.ChancedEnemies!)
             {
                 chancedEnemy.EnemyChance = 100;
             }

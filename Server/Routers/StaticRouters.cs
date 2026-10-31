@@ -57,9 +57,9 @@ public class StaticRouters : StaticRouter
                 ) =>
                 {
                     var data = (StartLocalRaidRequestData)info;
-                    _raidLifecycleService.RaidStarted(data.Location.ToLowerInvariant());
+                    _raidLifecycleService.RaidStarted(data.Location!.ToLowerInvariant());
 
-                    return output;
+                    return output!;
                 },
                 typeof(StartLocalRaidRequestData)
             ),
@@ -77,7 +77,7 @@ public class StaticRouters : StaticRouter
                         _raidLifecycleService.RaidEnded();
                     }
 
-                    return output;
+                    return output!;
                 },
                 typeof(EndLocalRaidRequestData)
             ),
@@ -97,7 +97,7 @@ public class StaticRouters : StaticRouter
                     sessionID,
                     output,
                     token
-                ) => await new ValueTask<string>(_jsonUtil.Serialize(_bossTrackingData))
+                ) => await new ValueTask<string>(_jsonUtil.Serialize(_bossTrackingData)!)
             )
         ];
     }

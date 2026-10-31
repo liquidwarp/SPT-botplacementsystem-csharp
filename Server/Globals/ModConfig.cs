@@ -23,17 +23,17 @@ public class ModConfig : IOnLoad
     private static FileUtil _fileUtil = null!;
     private static ISptLogger<ModConfig> _logger = null!;
     
-    public static MapZoneDefaults? MapZoneDefaults { get; private set; }
-    public static BossWaveDefaults? BossWaveDefaults { get; private set; }
-    public static PmcDefaults? PmcDefaults { get; private set; }
-    public static ScavDefaults? ScavDefaults { get; private set; }
-    public static HostilityDefaults? HostilityDefaults { get; private set; }
+    public static MapZoneDefaults MapZoneDefaults { get; private set; } = null!;
+    public static BossWaveDefaults BossWaveDefaults { get; private set; } = null!;
+    public static PmcDefaults PmcDefaults { get; private set; } = null!;
+    public static ScavDefaults ScavDefaults { get; private set; } = null!;
+    public static HostilityDefaults HostilityDefaults { get; private set; } = null!;
     public static AbpsConfig Config {get; private set;} = null!;
     public static AbpsConfig OriginalConfig {get; private set;} = null!;
     
     private static int _isActivelyProcessingFlag = 0;
     
-    public static string? _modPath = null!;
+    public static string _modPath = null!;
     
     public static event Action? ConfigChanged;
 
@@ -98,7 +98,7 @@ public class ModConfig : IOnLoad
 
             return ConfigOperationResult.Success;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return ConfigOperationResult.Failure;
         }
@@ -130,7 +130,7 @@ public class ModConfig : IOnLoad
 
             return ConfigOperationResult.Success;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return ConfigOperationResult.Failure;
         }

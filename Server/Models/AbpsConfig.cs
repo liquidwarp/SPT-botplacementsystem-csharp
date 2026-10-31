@@ -494,19 +494,19 @@ public record ConfigAppSettings
 
 public class ValidLocationsMinMax
 {
-    [JsonPropertyName("bigmap")] public MinMax<int> Customs { get; set; }
-    [JsonPropertyName("factory4_day")] public MinMax<int> Factory4Day { get; set; }
-    [JsonPropertyName("factory4_night")] public MinMax<int> Factory4Night { get; set; }
-    [JsonPropertyName("interchange")] public MinMax<int> Interchange { get; set; }
-    [JsonPropertyName("laboratory")] public MinMax<int> Laboratory { get; set; }
-    [JsonPropertyName("lighthouse")] public MinMax<int> Lighthouse { get; set; }
-    [JsonPropertyName("rezervbase")] public MinMax<int> Reserve { get; set; }
-    [JsonPropertyName("sandbox")] public MinMax<int> GroundZero { get; set; }
-    [JsonPropertyName("sandbox_high")] public MinMax<int> GroundZeroHigh { get; set; }
-    [JsonPropertyName("shoreline")] public MinMax<int> Shoreline { get; set; }
-    [JsonPropertyName("tarkovstreets")] public MinMax<int> TarkovStreets { get; set; }
-    [JsonPropertyName("woods")] public MinMax<int> Woods { get; set; }
-    [JsonPropertyName("labyrinth")] public MinMax<int> Labyrinth { get; set; }
+    [JsonPropertyName("bigmap")] public MinMax<int> Customs { get; set; } = null!;
+    [JsonPropertyName("factory4_day")] public MinMax<int> Factory4Day { get; set; } = null!;
+    [JsonPropertyName("factory4_night")] public MinMax<int> Factory4Night { get; set; } = null!;
+    [JsonPropertyName("interchange")] public MinMax<int> Interchange { get; set; } = null!;
+    [JsonPropertyName("laboratory")] public MinMax<int> Laboratory { get; set; } = null!;
+    [JsonPropertyName("lighthouse")] public MinMax<int> Lighthouse { get; set; } = null!;
+    [JsonPropertyName("rezervbase")] public MinMax<int> Reserve { get; set; } = null!;
+    [JsonPropertyName("sandbox")] public MinMax<int> GroundZero { get; set; } = null!;
+    [JsonPropertyName("sandbox_high")] public MinMax<int> GroundZeroHigh { get; set; } = null!;
+    [JsonPropertyName("shoreline")] public MinMax<int> Shoreline { get; set; } = null!;
+    [JsonPropertyName("tarkovstreets")] public MinMax<int> TarkovStreets { get; set; } = null!;
+    [JsonPropertyName("woods")] public MinMax<int> Woods { get; set; } = null!;
+    [JsonPropertyName("labyrinth")] public MinMax<int> Labyrinth { get; set; } = null!;
     
     public MinMax<int> this[string key]
     {
@@ -626,19 +626,19 @@ public class ValidLocationInt
 
 public class ValidLocationString
 {
-    [JsonPropertyName("bigmap")] public string Customs { get; set; }
-    [JsonPropertyName("factory4_day")] public string Factory4Day { get; set; }
-    [JsonPropertyName("factory4_night")] public string Factory4Night { get; set; }
-    [JsonPropertyName("interchange")] public string Interchange { get; set; }
-    [JsonPropertyName("laboratory")] public string Laboratory { get; set; }
-    [JsonPropertyName("lighthouse")] public string Lighthouse { get; set; }
-    [JsonPropertyName("rezervbase")] public string Reserve { get; set; }
-    [JsonPropertyName("sandbox")] public string GroundZero { get; set; }
-    [JsonPropertyName("sandbox_high")]public string GroundZeroHigh { get; set; }
-    [JsonPropertyName("shoreline")] public string Shoreline { get; set; }
-    [JsonPropertyName("tarkovstreets")] public string TarkovStreets { get; set; }
-    [JsonPropertyName("woods")] public string Woods { get; set; }
-    [JsonPropertyName("labyrinth")] public string Labyrinth { get; set; }
+    [JsonPropertyName("bigmap")] public string Customs { get; set; } = null!;
+    [JsonPropertyName("factory4_day")] public string Factory4Day { get; set; } = null!;
+    [JsonPropertyName("factory4_night")] public string Factory4Night { get; set; } = null!;
+    [JsonPropertyName("interchange")] public string Interchange { get; set; } = null!;
+    [JsonPropertyName("laboratory")] public string Laboratory { get; set; } = null!;
+    [JsonPropertyName("lighthouse")] public string Lighthouse { get; set; } = null!;
+    [JsonPropertyName("rezervbase")] public string Reserve { get; set; } = null!;
+    [JsonPropertyName("sandbox")] public string GroundZero { get; set; } = null!;
+    [JsonPropertyName("sandbox_high")]public string GroundZeroHigh { get; set; } = null!;
+    [JsonPropertyName("shoreline")] public string Shoreline { get; set; } = null!;
+    [JsonPropertyName("tarkovstreets")] public string TarkovStreets { get; set; } = null!;
+    [JsonPropertyName("woods")] public string Woods { get; set; } = null!;
+    [JsonPropertyName("labyrinth")] public string Labyrinth { get; set; } = null!;
 
     [JsonIgnore]
     public string this[string key]
@@ -690,31 +690,31 @@ public record BossLocationInfo
     [JsonPropertyName("addExtraSpawns")] public bool? AddExtraSpawns { get; set; }
     [JsonPropertyName("disableVanillaSpawns")] public bool? DisableVanillaSpawns { get; set; }
     [JsonPropertyName("time")] public long Time { get; set; }
-    [JsonPropertyName("spawnChance")] public ValidLocationInt SpawnChance { get; set; }
-    [JsonPropertyName("bossZone")] public ValidLocationString BossZone { get; set; }
+    [JsonPropertyName("spawnChance")] public ValidLocationInt SpawnChance { get; set; } = null!;
+    [JsonPropertyName("bossZone")] public ValidLocationString BossZone { get; set; } = null!;
 }
 
 public class BossConfig
 {
-    [JsonPropertyName("bossKnight")] public BossLocationInfo BossKnight { get; set; }
-    [JsonPropertyName("bossBully")] public BossLocationInfo BossBully { get; set; }
-    [JsonPropertyName("bossTagilla")] public BossLocationInfo BossTagilla { get; set; }
-    [JsonPropertyName("bossKilla")] public BossLocationInfo BossKilla { get; set; }
-    [JsonPropertyName("bossZryachiy")] public BossLocationInfo BossZryachiy { get; set; }
-    [JsonPropertyName("bossGluhar")] public BossLocationInfo BossGluhar { get; set; }
-    [JsonPropertyName("bossSanitar")] public BossLocationInfo BossSanitar { get; set; }
-    [JsonPropertyName("bossKolontay")] public BossLocationInfo BossKolontay { get; set; }
-    [JsonPropertyName("bossBoar")] public BossLocationInfo BossBoar { get; set; }
-    [JsonPropertyName("bossKojaniy")] public BossLocationInfo BossKojaniy { get; set; }
-    [JsonPropertyName("bossTagillaAgro")] public BossLocationInfo BossTagillaAgro { get; set; }
-    [JsonPropertyName("bossKillaAgro")] public BossLocationInfo BossKillaAgro { get; set; }
-    [JsonPropertyName("tagillaHelperAgro")] public BossLocationInfo TagillaHelperAgro { get; set; }
-    [JsonPropertyName("bossPartisan")] public BossLocationInfo BossPartisan { get; set; }
-    [JsonPropertyName("sectantPriest")] public BossLocationInfo SectantPriest { get; set; }
-    [JsonPropertyName("arenaFighterEvent")] public BossLocationInfo ArenaFighterEvent { get; set; }
-    [JsonPropertyName("pmcBot")] public BossLocationInfo PmcBot { get; set; }
-    [JsonPropertyName("exUsec")] public BossLocationInfo ExUsec { get; set; }
-    [JsonPropertyName("gifter")] public BossLocationInfo Gifter { get; set; }
+    [JsonPropertyName("bossKnight")] public BossLocationInfo BossKnight { get; set; } = null!;
+    [JsonPropertyName("bossBully")] public BossLocationInfo BossBully { get; set; } = null!;
+    [JsonPropertyName("bossTagilla")] public BossLocationInfo BossTagilla { get; set; } = null!;
+    [JsonPropertyName("bossKilla")] public BossLocationInfo BossKilla { get; set; } = null!;
+    [JsonPropertyName("bossZryachiy")] public BossLocationInfo BossZryachiy { get; set; } = null!;
+    [JsonPropertyName("bossGluhar")] public BossLocationInfo BossGluhar { get; set; } = null!;
+    [JsonPropertyName("bossSanitar")] public BossLocationInfo BossSanitar { get; set; } = null!;
+    [JsonPropertyName("bossKolontay")] public BossLocationInfo BossKolontay { get; set; } = null!;
+    [JsonPropertyName("bossBoar")] public BossLocationInfo BossBoar { get; set; } = null!;
+    [JsonPropertyName("bossKojaniy")] public BossLocationInfo BossKojaniy { get; set; } = null!;
+    [JsonPropertyName("bossTagillaAgro")] public BossLocationInfo BossTagillaAgro { get; set; } = null!;
+    [JsonPropertyName("bossKillaAgro")] public BossLocationInfo BossKillaAgro { get; set; } = null!;
+    [JsonPropertyName("tagillaHelperAgro")] public BossLocationInfo TagillaHelperAgro { get; set; } = null!;
+    [JsonPropertyName("bossPartisan")] public BossLocationInfo BossPartisan { get; set; } = null!;
+    [JsonPropertyName("sectantPriest")] public BossLocationInfo SectantPriest { get; set; } = null!;
+    [JsonPropertyName("arenaFighterEvent")] public BossLocationInfo ArenaFighterEvent { get; set; } = null!;
+    [JsonPropertyName("pmcBot")] public BossLocationInfo PmcBot { get; set; } = null!;
+    [JsonPropertyName("exUsec")] public BossLocationInfo ExUsec { get; set; } = null!;
+    [JsonPropertyName("gifter")] public BossLocationInfo Gifter { get; set; } = null!;
     
     public BossLocationInfo this[string key]
     {
@@ -818,7 +818,7 @@ public record PMCStartingConfig
     [JsonPropertyName("groupChance")] public int GroupChance { get; set; }
     [JsonPropertyName("maxGroupSize")] public int MaxGroupSize { get; set; }
     [JsonPropertyName("maxGroupCount")] public int MaxGroupCount { get; set; }
-    [JsonPropertyName("mapLimits")] public ValidLocationsMinMax MapLimits { get; set; }
+    [JsonPropertyName("mapLimits")] public ValidLocationsMinMax MapLimits { get; set; } = null!;
 }
 
 public record ScavWaveConfig
@@ -841,20 +841,20 @@ public record ScavWaveConfig
 public record ScavStartingConfig
 {
     [JsonPropertyName("enable")] public bool Enable { get; set; }
-    [JsonPropertyName("maxBotSpawns")] public ValidLocationInt MaxBotSpawns { get; set; }
+    [JsonPropertyName("maxBotSpawns")] public ValidLocationInt MaxBotSpawns { get; set; } = null!;
     [JsonPropertyName("startingMarksman")] public bool StartingMarksman { get; set; }
 }
 
 public record ScavConfig
 {
-    [JsonPropertyName("startingScavs")] public ScavStartingConfig StartingScavs { get; set; }
-    [JsonPropertyName("waves")] public ScavWaveConfig Waves { get; set; }
+    [JsonPropertyName("startingScavs")] public ScavStartingConfig StartingScavs { get; set; } = null!;
+    [JsonPropertyName("waves")] public ScavWaveConfig Waves { get; set; } = null!;
 }
 
 public record PMCConfig
 {
-    [JsonPropertyName("startingPMCs")] public PMCStartingConfig StartingPMCs { get; set; }
-    [JsonPropertyName("waves")] public WaveConfig Waves { get; set; }
+    [JsonPropertyName("startingPMCs")] public PMCStartingConfig StartingPMCs { get; set; } = null!;
+    [JsonPropertyName("waves")] public WaveConfig Waves { get; set; } = null!;
 }
 
 public class BossWaveDefaults : Dictionary<string, List<BossLocationSpawn>>

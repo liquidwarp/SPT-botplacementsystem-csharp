@@ -7,12 +7,10 @@ using SPTarkov.Server.Core.Utils.Cloners;
 
 namespace BotPlacementSystemServer.Controllers;
 
-using SPTarkov.Common.Models.Logging;
 using SPTarkov.Server.Core.Models.Spt.Tables;
 
 [Injectable(InjectionType = InjectionType.Singleton, TypePriority = OnLoadOrder.PostLoad + 69420)]
 public class MapSpawns(
-    ISptLogger<MapSpawns> logger,
     BossSpawns bossSpawns,
     ScavSpawns scavSpawns,
     PmcSpawns pmcSpawns,
@@ -167,8 +165,8 @@ public class MapSpawns(
         foreach (var map in _validMaps)
         {
             var actualKey = locationTable.GetMappedKey(map);
-            _locationData[actualKey].Base.BossLocationSpawn = cloner.Clone(_botMapCache[map]);
-            _locationData[actualKey].Base.Waves = cloner.Clone(_scavMapCache[map]);
+            _locationData[actualKey].Base.BossLocationSpawn = cloner.Clone(_botMapCache[map])!;
+            _locationData[actualKey].Base.Waves = cloner.Clone(_scavMapCache[map])!;
         }
     }
 
@@ -220,7 +218,7 @@ public class MapSpawns(
     private void ReplaceOriginalLocationForMap(string location)
     {
         var actualKey = locationTable.GetMappedKey(location);
-        _locationData[actualKey].Base.BossLocationSpawn = cloner.Clone(_botMapCache[location]);
-        _locationData[actualKey].Base.Waves = cloner.Clone(_scavMapCache[location]);
+        _locationData[actualKey].Base.BossLocationSpawn = cloner.Clone(_botMapCache[location])!;
+        _locationData[actualKey].Base.Waves = cloner.Clone(_scavMapCache[location])!;
     }
 }

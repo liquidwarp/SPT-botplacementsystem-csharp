@@ -10,6 +10,6 @@ public record CustomizedObject
 
 public record BossTrackingStats : IRequestData
 {
-    public Dictionary<string, CustomizedObject> Data { get; set; }
-    public string ProfileId { get; set; }
+    public Dictionary<string, CustomizedObject> Data { get; set; } = null!;
+    public string ProfileId { get; set; } = null!;
 }

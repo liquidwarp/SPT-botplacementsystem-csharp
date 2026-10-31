@@ -171,7 +171,7 @@ public class BossSpawns(
         return pmcWaveSpawnInfo;
     }
 
-    private List<BossLocationSpawn> GetDefaultValuesForBoss(string boss, string location)
+    private List<BossLocationSpawn>? GetDefaultValuesForBoss(string boss, string location)
     {
         switch (boss)
         {
