@@ -21,6 +21,8 @@ public class PmcGroupSpawner : MonoBehaviour
     public static readonly Dictionary<string, HashSet<string>> AllPmcGroups = new();
     private static readonly Dictionary<string, string> FollowerToLeader = new();
     private static readonly Dictionary<string, BotBossSpawn.CG_Class332> WavePmcGroupClassData = new();
+    // Leader profile id -> group, created by whichever member of the group activates first
+    private static readonly Dictionary<string, BotsGroup> PmcGroupsByLeader = new();
 
     public static bool Initialized;
         
@@ -29,7 +31,8 @@ public class PmcGroupSpawner : MonoBehaviour
         AllPmcGroups.Clear();
         FollowerToLeader.Clear();
         WavePmcGroupClassData.Clear();
-            
+        PmcGroupsByLeader.Clear();
+
         _bossSpawnerClass = bossSpawnerClass;
         _botSpawner = botSpawner;
         _iBotCreator = botCreator;
@@ -195,6 +198,16 @@ public class PmcGroupSpawner : MonoBehaviour
             followerSet.Add(profile.ProfileId);
             FollowerToLeader[profile.ProfileId] = leaderProfileId;
         }
+    }
+
+    // Profile id of the leader of the bot's squad, or null if the bot isn't in one of our squads
+    public static string GetLeaderId(string profileId)
+    {
+        if (AllPmcGroups.ContainsKey(profileId))
+        {
+            return profileId;
+        }
+        return FollowerToLeader.TryGetValue(profileId, out var leaderId) ? leaderId : null;
     }
 
     private static void SpawnBotsInZoneOnPositions(List<ISpawnPoint> openedPositions, BotZone botZone, BotCreationData data, Action<BotOwner> callback = null)
@@ -399,50 +412,39 @@ public class PmcGroupSpawner : MonoBehaviour
             Utility.ReservedSpawnPositions.RemoveWhere(pos => Vector3.Distance(pos, bot.Position) < 10f);
         }
             
-        if (AllPmcGroups.ContainsKey(botProfileId))
+        // Leader and followers spawn concurrently, so a follower can activate before its leader. Whoever comes first
+        // creates the group and the others join it.
+        var leaderId = GetLeaderId(botProfileId);
+        if (leaderId == null)
         {
-            foreach (var botOwner in _botSpawner.GetBotEnemiesList(bot))
-            {
-                botOwners.Add(botOwner);
-            }
-                
+            // Not one of ours, never hand EFT a null group
+            return _botSpawner.GetGroupAndSetEnemies(bot, zone);
+        }
+
+        if (PmcGroupsByLeader.TryGetValue(leaderId, out var group))
+        {
             _botSpawner.SetBotAsEnemy(bot);
-            var botsGroup = new BotsGroup(zone, _botSpawner.BotGame, bot, botOwners, _botSpawner._deadBodiesController, _botSpawner._allPlayers, true);
-                
-            if (bot.SpawnProfileData.SpawnParams.ShallBeGroup != null)
-            {
-                botsGroup.TargetMembersCount = bot.SpawnProfileData.SpawnParams.ShallBeGroup.StartCount;
-            }
-                
-            _botSpawner.Groups.Add(zone, side, botsGroup, true);
-            return botsGroup;
+            return group;
         }
 
-        if (FollowerToLeader.TryGetValue(botProfileId, out var leaderId))
+        if (Plugin.DebugLogging && leaderId != botProfileId)
+            Plugin.LogSource.LogInfo($"{bot.Profile.Nickname} activated before Leader={leaderId}, creating the group");
+
+        foreach (var botOwner in _botSpawner.GetBotEnemiesList(bot))
         {
-            for (var attempt = 0; attempt < 10; attempt++)
-            {
-                foreach (var (botZone, botGroup) in _botSpawner.Groups)
-                {
-                    foreach (var group in botGroup._bossGroup)
-                    {
-                        if (group._initialBot.ProfileId == leaderId)
-                        {
-                            if (Plugin.DebugLogging)
-                                Plugin.LogSource.LogInfo($"{bot.Profile.Nickname} found Leader={leaderId} - Attempts: {attempt}");
-                                
-                            _botSpawner.SetBotAsEnemy(bot);
-                            return group;
-                        }
-                    }
-                }
-                Thread.Sleep(50);
-            }
-                
-            if (Plugin.DebugLogging)
-                Plugin.LogSource.LogInfo($"[ABPS] GetGroupAndSetEnemies: {bot.Profile.Nickname} could not find leader group after retries, leaderId={leaderId}");
+            botOwners.Add(botOwner);
         }
 
-        return null;
+        _botSpawner.SetBotAsEnemy(bot);
+        var botsGroup = new BotsGroup(zone, _botSpawner.BotGame, bot, botOwners, _botSpawner._deadBodiesController, _botSpawner._allPlayers, true);
+
+        if (bot.SpawnProfileData.SpawnParams.ShallBeGroup != null)
+        {
+            botsGroup.TargetMembersCount = bot.SpawnProfileData.SpawnParams.ShallBeGroup.StartCount;
+        }
+
+        _botSpawner.Groups.Add(zone, side, botsGroup, true);
+        PmcGroupsByLeader[leaderId] = botsGroup;
+        return botsGroup;
     }
 }
